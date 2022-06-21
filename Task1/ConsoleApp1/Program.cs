@@ -1,22 +1,21 @@
-﻿using System;
-using System.Threading;
-class Program
+﻿class Program
 {
     public static System.Timers.Timer timer = new System.Timers.Timer();
 
     public static void TimerHandler(User user)
     {
-        Console.WriteLine(user.getPeriodToNextBirthday());
+        Console.WriteLine(user.GetPeriodToNextBirthday());
     }
 
     static void Main(string[] args)
     {
-        System.Console.WriteLine($ "Пользователь, введите: Имя, Фамилию, Год рождения. Разделителем между частями может быть любой символ: пробел, #, / и так далее.");
+        System.Console.WriteLine($"Пользователь, введите: Имя, Фамилию, Год рождения. Разделителем между частями может быть любой символ: пробел, #, / и так далее.");
         //Сергей.Осипенко.07/04/1997
 
         string str = "";
         while (true)
         {
+            //"Сергей.Осипенко.07/04/1997";
             str = Console.ReadLine();
 
             if (str.Length > 0 & str.Length < 40)
@@ -25,17 +24,17 @@ class Program
             }
             else
             {
-                System.Console.WriteLine($ "Первоначальная строка не может быть пустой или больше 40 символов.");
+                System.Console.WriteLine($"Первоначальная строка не может быть пустой или больше 40 символов.");
             }
         }
-
+        
         User user = new User(str);
-        Console.WriteLine($ "{user.ToString()}");
+        Console.WriteLine($"{user.ToString()}");
 
         timer.Elapsed += (sender, eventArgs) => {
-            if (user.isBirthdayToday() & DateTime.Now.Minute == 33)
+            if (user.IsBirthdayToday())
             {
-                Console.WriteLine("Поздравляем вам исполнилось " + user.getAge());
+                Console.WriteLine("Поздравляем вам исполнилось " + user.GetAge());
                 timer.Stop();
                 Environment.Exit(0);
             }

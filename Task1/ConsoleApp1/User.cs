@@ -1,55 +1,46 @@
-﻿using System;
-
+﻿using System.Text.RegularExpressions;
 public class User
 {
-    public string firstName = "";
-    public string lastName = "";
-    public DateTime birthday;
+    public string FirstName = "";
+    public string LastName = "";
+    public DateTime Birthday;
 
     public User()
     {
-        this.firstName = "Не определено";
-        this.lastName = "Не определено";
-        this.birthday = DateTime.Now;
+        FirstName = "Не определено";
+        LastName = "Не определено";
+        Birthday = DateTime.Now;
     }
 
     public User(string str) : this()
     {
-        char[] delimiterChars = {
-      '#',
-      ' ',
-      '/',
-      ',',
-      '.',
-      ':',
-      '\t'
-    };
-        string[] data = str.Split(delimiterChars);
+        Regex pattern = new Regex(@"\.|/|#| |,|:|\t");       
+        string[] data = pattern.Split(str);
 
-        if (data.Length > 5)
+        if (data.Length > 4)
         {
-            this.firstName = data[0];
-            this.lastName = data[1];
-            this.birthday = DateTime.ParseExact(data[2] + "-" + data[3] + "-" + data[4], "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            FirstName = data[0];
+            LastName = data[1];
+            Birthday = DateTime.ParseExact(data[2] + "-" + data[3] + "-" + data[4], "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
         }
     }
 
     public override string ToString()
     {
-        return "Имя: " + this.firstName + "\n" +
-          "Фамилия: " + this.lastName + "\n" +
-          "Родился: " + this.getBirthdayAsString() + "\n" +
-          "Кол-во полных лет: " + this.getAge() + "\n" +
-          "Следующий день рождение через: " + this.getPeriodToNextBirthday();
+        return "Имя: " + FirstName + "\n" +
+          "Фамилия: " + LastName + "\n" +
+          "Родился: " + GetBirthdayAsString() + "\n" +
+          "Кол-во полных лет: " + GetAge() + "\n" +
+          "Следующий день рождение через: " + GetPeriodToNextBirthday();
     }
-    public int getAge()
+    public int GetAge()
     {
-        return DateTime.Now.Year - this.birthday.Year;
+        return DateTime.Now.Year - Birthday.Year;
     }
-    public string getPeriodToNextBirthday()
+    public string GetPeriodToNextBirthday()
     {
         DateTime today = DateTime.Today;
-        DateTime next = birthday.AddYears(today.Year - birthday.Year);
+        DateTime next = Birthday.AddYears(today.Year - Birthday.Year);
 
         if (next.Date <= today.Date)
             next = next.AddYears(1);
@@ -58,14 +49,14 @@ public class User
         return String.Format("{0} days, {1} hours, {2} minutes, {3} seconds",
           span.Days, span.Hours, span.Minutes, span.Seconds);
     }
-    private string getBirthdayAsString()
+    private string GetBirthdayAsString()
     {
-        return String.Format("{0:dddd dd MMMM yyyy}", this.birthday);
+        return String.Format("{0:dddd dd MMMM yyyy}", Birthday);
     }
 
-    public bool isBirthdayToday()
+    public bool IsBirthdayToday()
     {
-        if (this.birthday.Day == DateTime.Now.Day & this.birthday.Month == DateTime.Now.Month)
+        if (Birthday.Day == DateTime.Now.Day & Birthday.Month == DateTime.Now.Month)
         {
             return true;
         }
