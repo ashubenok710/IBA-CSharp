@@ -1,6 +1,8 @@
-﻿class Program
+﻿using Timer = System.Timers.Timer;
+
+class Program
 {
-    public static System.Timers.Timer timer = new System.Timers.Timer();
+    public static Timer Timer = new Timer();
 
     public static void TimerHandler(User user)
     {
@@ -31,18 +33,18 @@
         User user = new User(str);
         Console.WriteLine($"{user.ToString()}");
 
-        timer.Elapsed += (sender, eventArgs) => {
+        Timer.Elapsed += (sender, eventArgs) => {
             if (user.IsBirthdayToday())
             {
                 Console.WriteLine("Поздравляем вам исполнилось " + user.GetAge());
-                timer.Stop();
+                Timer.Stop();
                 Environment.Exit(0);
             }
             TimerHandler(user);
         };
-        timer.Interval = (1000);
-        timer.Enabled = true;
-        timer.Start();
+        Timer.Interval = (1000);
+        Timer.Enabled = true;
+        Timer.Start();
         Console.ReadKey();
     }
 

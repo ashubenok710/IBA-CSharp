@@ -14,7 +14,9 @@ public class User
 
     public User(string str) : this()
     {
-        Regex pattern = new Regex(@"\.|/|#| |,|:|\t");       
+        Regex pattern = new Regex(@"[^a-zA-Za-\u0401\u0451\u0410-\u044f 0-9]");
+        //Regex(@"[^a-zA-Za-åa-ö-w-я 0-9]");        
+        //Regex(@"\.|/|#| |,|:|\t");       
         string[] data = pattern.Split(str);
 
         if (data.Length > 4)
