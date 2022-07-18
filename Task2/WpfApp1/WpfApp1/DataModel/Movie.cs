@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GalaSoft.MvvmLight;
 using System.ComponentModel.DataAnnotations;
 
 namespace WpfApp1.Model
 {
-    public partial class Movie
+    public partial class Movie : ObservableObject
     {
         [Key]
         public int Id { get; set; }
@@ -12,5 +11,7 @@ namespace WpfApp1.Model
         public string ProductionDate { get; set; } = null!;
         public string Raiting { get; set; } = null!;
         public int DirectorId { get; set; }
+
+        public Person Director;
     }
 }
