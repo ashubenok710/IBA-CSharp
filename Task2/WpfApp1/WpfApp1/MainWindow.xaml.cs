@@ -224,14 +224,13 @@ namespace WpfApp1
             {
                 var workbook = new XLWorkbook();
                 DBMoviesContext _context = new DBMoviesContext();
-                using (_context)
-                {
-                    var movies = _context.Movies.ToList();
-                    var dataTable = DbContextExtensions.ToDataTable(movies);
 
-                    IXLWorksheet worksheet = workbook.AddWorksheet(dataTable);
-                    worksheet.Name = "MoviesCatalog";
-                }
+                var movies = myList.ToList();
+                var dataTable = DbContextExtensions.ToDataTable(movies);
+
+                IXLWorksheet worksheet = workbook.AddWorksheet(dataTable);
+                worksheet.Name = "MoviesCatalog";
+
                 workbook.SaveAs(saveFileDialog1.FileName + ".xlsx");
             }
         }
@@ -240,25 +239,19 @@ namespace WpfApp1
         private void clickExportXML(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.Filter = "Excel |*.xml";
+            saveFileDialog1.Filter = "XML |*.xml";
             saveFileDialog1.Title = "Save XML File";
             saveFileDialog1.ShowDialog();
 
             if (saveFileDialog1.FileName != "")
             {
-                DBMoviesContext _context = new DBMoviesContext();
-                using (_context)
+                var m = myList.ToList();
+                //https://stackoverflow.com/questions/6234290/serialize-entity-framework-object-with-children-to-xml-file
+                using (XmlWriter writer = XmlWriter.Create(saveFileDialog1.FileName + ".xml"))
                 {
-                    var m = _context.Movies.ToList();
-                    //var dt = DbContextExtensions.ToDataTable(m);
-                    //https://stackoverflow.com/questions/6234290/serialize-entity-framework-object-with-children-to-xml-file
-                    using (XmlWriter writer = XmlWriter.Create(saveFileDialog1.FileName + ".xml"))
-                    {
-                        DataContractSerializer serializer = new DataContractSerializer(m.GetType());
-                        serializer.WriteObject(writer, m);
-                        writer.Close();
-                    }
-
+                    DataContractSerializer serializer = new DataContractSerializer(m.GetType());
+                    serializer.WriteObject(writer, m);
+                    writer.Close();
                 }
             }
         }
@@ -304,6 +297,15 @@ namespace WpfApp1
             PageInfo.Content = PageNumberDisplay();
         }
 
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            myList = _context.Movies.Where(x => (string.IsNullOrWhiteSpace(x.Name) || x.Name.Contains(txtMovieName.Text))
+            && (string.IsNullOrWhiteSpace(x.ProductionDate) || x.ProductionDate.Contains(txtYear.Text))).
+                OrderBy(b => b.ProductionDate).ThenBy(b => b.Raiting).AsQueryable().ToList();
 
+            DataTable firstTable = PagedTable.SetPaging(ConvertToListOf<Movie>(myList.ToList()), numberOfRecPerPage);
+
+            DisplayGrid.ItemsSource = firstTable.DefaultView;
+        }
     }
 }

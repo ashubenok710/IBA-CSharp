@@ -19,31 +19,67 @@
         </Menu>
 
         <Grid>
-            <Grid>
+            <Grid Margin="0,0,10,0">
                 <DataGrid
                     x:Name="DisplayGrid"
-                    Margin="10,25,10,65"
+                    Margin="10,25,40,120"
                     LoadingRow="DataGrid_LoadingRow" />
+                <Label
+                    Margin="10,374,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Movie Name&#xA;" />
+                <TextBox
+                    x:Name="txtMovieName"
+                    Width="120"
+                    Margin="10,404,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    TextWrapping="Wrap" />
+                <Button
+                    Width="72"
+                    Height="23"
+                    Margin="404,404,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="Button_Click_4"
+                    Content="Apply&#xD;&#xA;" />
+                <TextBox
+                    x:Name="txtYear"
+                    Width="120"
+                    Margin="145,404,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    RenderTransformOrigin="0.474,0.556"
+                    TextWrapping="Wrap" />
+                <Label
+                    Margin="145,373,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Year" />
             </Grid>
             <StackPanel
                 Width="774"
-                Margin="0,429,0,0"
+                Margin="0,419,0,10"
                 HorizontalAlignment="Left"
                 Orientation="Horizontal">
                 <Button
                     Width="64"
+                    Height="30"
                     Margin="5"
                     Click="clickExportXLS"
                     Content="Export XLS"
                     ToolTip="Export XLS" />
                 <Button
                     Width="64"
+                    Height="30"
                     Margin="5"
                     Click="clickExportXML"
                     Content="Export XML"
                     ToolTip="Export XML" />
                 <Button
                     Width="64"
+                    Height="30"
                     Margin="5"
                     Click="clickLoadData"
                     Content="Load Data"
@@ -51,7 +87,7 @@
                 <ComboBox
                     x:Name="NumberOfRecords"
                     Width="80"
-                    Height="49"
+                    Height="30"
                     AutomationProperties.HelpText="Rows per page"
                     FontSize="18"
                     FontWeight="Bold"
@@ -61,12 +97,14 @@
                     Text="10" />
                 <Button
                     Width="40"
+                    Height="30"
                     Margin="5"
                     Click="Button_Click"
                     Content="&lt;&lt;"
                     ToolTip="First Page" />
                 <Button
                     Width="40"
+                    Height="30"
                     Margin="5"
                     Click="Button_Click_3"
                     Content="&lt;"
@@ -80,12 +118,14 @@
                     Foreground="Black" />
                 <Button
                     Width="40"
+                    Height="30"
                     Margin="5"
                     Click="Button_Click_2"
                     Content="&gt;"
                     ToolTip="Next Page" />
                 <Button
                     Width="40"
+                    Height="30"
                     Margin="5,5,5,5"
                     HorizontalAlignment="Right"
                     Click="Button_Click_1"
@@ -94,12 +134,14 @@
 
                 <Button
                     Width="62"
+                    Height="30"
                     Margin="5"
                     Click="Button_Click_1Async"
                     Content="Load Async"
                     ToolTip="Load Async" />
                 <Button
                     Width="62"
+                    Height="30"
                     Click="Button_Click_1AsyncTest"
                     Content="Test"
                     ToolTip="Load Async" />
