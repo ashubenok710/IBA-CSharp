@@ -1,5 +1,7 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.Win32;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -17,6 +19,8 @@ namespace WpfApp1
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
+
     public partial class MainWindow : Window
     {
 
@@ -24,11 +28,43 @@ namespace WpfApp1
 
         //private resultQuery;
 
+        private int numberOfRecPerPage; //Initialize our Variable, Classes and the List
 
+        static Paging PagedTable = new Paging();
+
+        IList<Movie> myList;
         public MainWindow()
         {
             InitializeComponent();
+
+            myList = _context.Movies.OrderBy(b => b.ProductionDate).ThenBy(b => b.Raiting).AsQueryable().ToList();
+
+            PagedTable.PageIndex = 1;
+
+            int[] RecordsToShow = { 10, 20, 30, 50, 100 };
+
+            foreach (int RecordGroup in RecordsToShow)
+            {
+                NumberOfRecords.Items.Add(RecordGroup);
+            }
+
+            numberOfRecPerPage = Convert.ToInt32(NumberOfRecords.SelectedItem);
+
+            DataTable firstTable = PagedTable.SetPaging(ConvertToListOf<Movie>(myList.ToList()), numberOfRecPerPage);
+
+            DisplayGrid.ItemsSource = firstTable.DefaultView;
         }
+
+        private IList<T> ConvertToListOf<T>(IList iList)
+        {
+            IList<T> result = new List<T>();
+
+            foreach (T value in iList)
+                result.Add(value);
+
+            return result;
+        }
+
         void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
@@ -37,7 +73,7 @@ namespace WpfApp1
 
         public void closeItem_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            Application.Current.Shutdown();
         }
 
         private async Task LoadAsync(string FileName)
@@ -144,7 +180,9 @@ namespace WpfApp1
 
         private async void Button_Click_1AsyncTest(object sender, RoutedEventArgs e)
         {
-            using (_context)
+            DBMoviesContext context = new DBMoviesContext();
+
+            using (context)
             {
                 var result = from person in _context.People
                              join movie in _context.Movies on person.PersonId equals movie.DirectorId
@@ -201,10 +239,6 @@ namespace WpfApp1
 
         private void clickExportXML(object sender, RoutedEventArgs e)
         {
-            var workbook = new XLWorkbook();
-            //workbook.AddWorksheet("MoviesCatalog");
-            //var ws = workbook.Worksheet("MoviesCatalog");
-
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "Excel |*.xml";
             saveFileDialog1.Title = "Save XML File";
@@ -228,6 +262,48 @@ namespace WpfApp1
                 }
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            DisplayGrid.ItemsSource = PagedTable.First(myList, numberOfRecPerPage).DefaultView;
+            PageInfo.Content = PageNumberDisplay();
+        }
+
+        public string PageNumberDisplay()
+        {
+            int PagedNumber = numberOfRecPerPage * (PagedTable.PageIndex + 1);
+            if (PagedNumber > myList.Count)
+            {
+                PagedNumber = myList.Count;
+            }
+            return PagedNumber + " of " + myList.Count;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            DisplayGrid.ItemsSource = PagedTable.Last(myList, numberOfRecPerPage).DefaultView;
+            PageInfo.Content = PageNumberDisplay();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            DisplayGrid.ItemsSource = PagedTable.Next(myList, numberOfRecPerPage).DefaultView;
+            PageInfo.Content = PageNumberDisplay();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            DisplayGrid.ItemsSource = PagedTable.Previous(myList, numberOfRecPerPage).DefaultView;
+            PageInfo.Content = PageNumberDisplay();
+        }
+
+        private void NumberOfRecords_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            numberOfRecPerPage = Convert.ToInt32(NumberOfRecords.SelectedItem);
+            DisplayGrid.ItemsSource = PagedTable.First(myList, numberOfRecPerPage).DefaultView;
+            PageInfo.Content = PageNumberDisplay();
+        }
+
 
     }
 }

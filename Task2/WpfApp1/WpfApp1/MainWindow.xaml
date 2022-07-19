@@ -49,49 +49,46 @@
                     Content="Load Data"
                     ToolTip="Load Data" />
                 <ComboBox
-                    x:Name="comboBox1"
+                    x:Name="NumberOfRecords"
                     Width="80"
                     Height="49"
                     AutomationProperties.HelpText="Rows per page"
-                    FontSize="36"
+                    FontSize="18"
                     FontWeight="Bold"
                     RenderTransformOrigin="0.5,0.5"
                     SelectedIndex="0"
-                    Text="10">
-                    <ComboBoxItem Content="10" />
-                    <ComboBoxItem Content="20" />
-                    <ComboBoxItem Content="50" />
-                </ComboBox>
+                    SelectionChanged="NumberOfRecords_SelectionChanged"
+                    Text="10" />
                 <Button
                     Width="40"
                     Margin="5"
+                    Click="Button_Click"
                     Content="&lt;&lt;"
                     ToolTip="First Page" />
                 <Button
                     Width="40"
                     Margin="5"
+                    Click="Button_Click_3"
                     Content="&lt;"
                     ToolTip="Previous Page" />
-                <TextBlock VerticalAlignment="Center">
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat=" {0} of {1}">
-                            <Binding Path="CurrentPage" />
-                            <Binding Path="NumberOfPages" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-                <TextBlock Text="{Binding CurrentPage}" />
-                <TextBlock VerticalAlignment="Center" Text="of" />
-                <TextBlock Text="{Binding NumberOfPages}" />
+                <Label
+                    x:Name="PageInfo"
+                    VerticalAlignment="Center"
+                    Content="of"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Foreground="Black" />
                 <Button
                     Width="40"
                     Margin="5"
+                    Click="Button_Click_2"
                     Content="&gt;"
                     ToolTip="Next Page" />
                 <Button
                     Width="40"
                     Margin="5,5,5,5"
                     HorizontalAlignment="Right"
+                    Click="Button_Click_1"
                     Content="&gt;&gt;"
                     ToolTip="Last Page" />
 
