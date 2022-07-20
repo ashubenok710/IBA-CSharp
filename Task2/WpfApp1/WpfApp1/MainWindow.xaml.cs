@@ -306,6 +306,7 @@ namespace WpfApp1
             DataTable firstTable = PagedTable.SetPaging(ConvertToListOf<Movie>(myList.ToList()), numberOfRecPerPage);
 
             DisplayGrid.ItemsSource = firstTable.DefaultView;
+            PageInfo.Content = PageNumberDisplay();
         }
     }
 }
