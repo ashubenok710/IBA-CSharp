@@ -15,7 +15,7 @@ public static class DbContextExtensions
         PropertyDescriptorCollection properties =
             TypeDescriptor.GetProperties(typeof(T));
         DataTable table = new DataTable();
-        table.TableName = "wdwd";
+        //table.TableName = "table name";
         foreach (PropertyDescriptor prop in properties)
             table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
         foreach (T item in data)
