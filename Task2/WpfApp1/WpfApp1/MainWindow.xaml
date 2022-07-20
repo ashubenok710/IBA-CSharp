@@ -18,7 +18,7 @@
             </MenuItem>
         </Menu>
 
-        <Grid>
+        <Grid Margin="0,0,0,-16">
             <Grid Margin="0,0,10,0">
                 <DataGrid
                     x:Name="DisplayGrid"
@@ -39,7 +39,7 @@
                 <Button
                     Width="72"
                     Height="23"
-                    Margin="404,404,0,0"
+                    Margin="292,404,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Click="Button_Click_4"
@@ -59,9 +59,10 @@
                     Content="Year" />
             </Grid>
             <StackPanel
-                Width="774"
-                Margin="0,419,0,10"
+                Width="779"
+                Margin="0,372,0,10"
                 HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
                 Orientation="Horizontal">
                 <Button
                     Width="64"
@@ -77,13 +78,6 @@
                     Click="clickExportXML"
                     Content="Export XML"
                     ToolTip="Export XML" />
-                <Button
-                    Width="64"
-                    Height="30"
-                    Margin="5"
-                    Click="clickLoadData"
-                    Content="Load Data"
-                    ToolTip="Load Data" />
                 <ComboBox
                     x:Name="NumberOfRecords"
                     Width="80"
@@ -131,6 +125,12 @@
                     Click="Button_Click_1"
                     Content="&gt;&gt;"
                     ToolTip="Last Page" />
+                <Button
+                    Width="64"
+                    Height="30"
+                    Click="clickLoadData"
+                    Content="Load Data"
+                    ToolTip="Load Data" />
 
                 <Button
                     Width="62"
