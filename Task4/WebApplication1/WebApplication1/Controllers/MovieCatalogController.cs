@@ -45,6 +45,8 @@ namespace WebApplication1.Controllers
 
             dbMovie.Name = movie.Name;
             dbMovie.Raiting = movie.Raiting;
+            dbMovie.ProductionDate = movie.ProductionDate;
+            dbMovie.DirectorId = movie.DirectorId;
 
             await _context.SaveChangesAsync();
             return Ok(await _context.Movies.ToListAsync());
