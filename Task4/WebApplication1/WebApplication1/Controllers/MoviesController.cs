@@ -4,14 +4,15 @@ namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MovieController : ControllerBase
+    public class MoviesController : ControllerBase
     {
         private readonly DBMoviesContext _context = new DBMoviesContext();
 
-        public MovieController(DBMoviesContext context)
+        public MoviesController(DBMoviesContext context)
         {
             _context = context;
         }
+
 
         [HttpGet]
         public async Task<ActionResult<List<Movie>>> GetMovies()
@@ -20,7 +21,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<Movie>>> GetVideoGame(int id)
+        public async Task<ActionResult<List<Movie>>> GetMovie(int id)
         {
             var movie = await _context.Movies.FindAsync(id);
             if (movie == null)
@@ -29,7 +30,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<Movie>>> CreateVideoGame(Movie movie)
+        public async Task<ActionResult<List<Movie>>> CreateMovie(Movie movie)
         {
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
@@ -37,7 +38,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<List<Movie>>> UpdateVideoGame(Movie movie, int id)
+        public async Task<ActionResult<List<Movie>>> UpdateMovie(Movie movie, int id)
         {
             var dbMovie = await _context.Movies.FindAsync(id);
             if (dbMovie == null)
@@ -53,7 +54,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<Movie>>> DeleteVideoGame(int id)
+        public async Task<ActionResult<List<Movie>>> DeleteMovie(int id)
         {
             var dbMovie = await _context.Movies.FindAsync(id);
             if (dbMovie == null)
