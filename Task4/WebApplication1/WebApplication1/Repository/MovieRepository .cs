@@ -2,42 +2,42 @@
 {
     public class MovieRepository : IMovieRepository, IDisposable
     {
-        private DBMoviesContext context;
+        private DBMoviesContext _context;
 
-        public MovieRepository(DBMoviesContext context)
+        public MovieRepository()
         {
-            this.context = context;
+            this._context = new DBMoviesContext();
         }
 
-        public IEnumerable<Movie> GetMovies()
+        public async Task<List<Movie>> GetMovies()
         {
-            return context.Movies.ToList();
+            return await _context.Movies.ToListAsync();
         }
 
-        public Movie GetMovieByID(int id)
+        public async Task<Movie> GetMovieByID(int id)
         {
-            return context.Movies.Find(id);
+            return await _context.Movies.FindAsync(id);
         }
 
-        public void InsertMovie(Movie Movie)
+        public void InsertMovie(Movie movie)
         {
-            context.Movies.Add(Movie);
+            _context.Movies.Add(movie);
         }
 
         public void DeleteMovie(int MovieID)
         {
-            Movie Movie = context.Movies.Find(MovieID);
-            context.Movies.Remove(Movie);
+            Movie Movie = _context.Movies.Find(MovieID);
+            _context.Movies.Remove(Movie);
         }
 
         public void UpdateMovie(Movie Movie)
         {
-            context.Entry(Movie).State = EntityState.Modified;
+            _context.Entry(Movie).State = EntityState.Modified;
         }
 
         public void Save()
         {
-            context.SaveChanges();
+            _context.SaveChangesAsync();
         }
 
         private bool disposed = false;
@@ -48,7 +48,7 @@
             {
                 if (disposing)
                 {
-                    context.Dispose();
+                    _context.Dispose();
                 }
             }
             this.disposed = true;

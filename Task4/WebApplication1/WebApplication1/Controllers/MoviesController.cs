@@ -6,41 +6,40 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class MoviesController : ControllerBase
     {
-        private readonly DBMoviesContext _context = new DBMoviesContext();
 
-        public MoviesController(DBMoviesContext context)
+        private readonly IMovieRepository _movieRepository;
+
+        public MoviesController(IMovieRepository movieRepository)
         {
-            _context = context;
+            _movieRepository = movieRepository;
         }
-
 
         [HttpGet]
         public async Task<ActionResult<List<Movie>>> GetMovies()
         {
-            return Ok(await _context.Movies.ToListAsync());
+            return Ok(await _movieRepository.GetMovies());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<List<Movie>>> GetMovie(int id)
         {
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await _movieRepository.GetMovieByID(id);
             if (movie == null)
                 return NotFound("No movie here. :/");
             return Ok(movie);
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<Movie>>> CreateMovie(Movie movie)
+        public void InsertMovie(Movie movie)
         {
-            _context.Movies.Add(movie);
-            await _context.SaveChangesAsync();
-            return Ok(await _context.Movies.ToListAsync());
+            _movieRepository.InsertMovie(movie);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<List<Movie>>> UpdateMovie(Movie movie, int id)
         {
-            var dbMovie = await _context.Movies.FindAsync(id);
+            var dbMovie = await _movieRepository.GetMovieByID(id);
+            //_context.Movies.FindAsync(id);
             if (dbMovie == null)
                 return NotFound("No movie here. :/");
 
@@ -49,21 +48,21 @@ namespace WebApplication1.Controllers
             dbMovie.ProductionDate = movie.ProductionDate;
             dbMovie.DirectorId = movie.DirectorId;
 
-            await _context.SaveChangesAsync();
-            return Ok(await _context.Movies.ToListAsync());
+            _movieRepository.Save();
+            //_context.SaveChangesAsync();
+            return Ok(await _movieRepository.GetMovies());
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<List<Movie>>> DeleteMovie(int id)
         {
-            var dbMovie = await _context.Movies.FindAsync(id);
+            var dbMovie = await _movieRepository.GetMovieByID(id);
             if (dbMovie == null)
                 return NotFound("No movie here. :/");
 
-            _context.Movies.Remove(dbMovie);
-            await _context.SaveChangesAsync();
+            _movieRepository.DeleteMovie(dbMovie.Id);
 
-            return Ok(await _context.Movies.ToListAsync());
+            return Ok(await _movieRepository.GetMovies());
         }
     }
 }

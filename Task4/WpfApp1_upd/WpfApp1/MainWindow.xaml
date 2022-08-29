@@ -61,14 +61,20 @@
                     Margin="442,404,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Click="Button_Click_5"
+                    Click="Button_DeleteMovie"
                     Content="Delete" />
                 <Label
                     x:Name="myLable"
-                    Margin="519,403,0,0"
+                    Margin="497,403,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="Label" />
+                <Button
+                    Margin="561,404,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="Button_Click_5Async"
+                    Content="Google Oauth2.0" />
             </Grid>
             <StackPanel
                 Width="779"
