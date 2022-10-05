@@ -1,0 +1,78 @@
+﻿@model CinemaPortal.Web.Models.Movie
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4>Add/Update Movie</h4>
+<br />
+
+<div class="container">    
+    <form id="create-form" asp-action="AddOrEdit" method="post" onsubmit="return jQueryPost(this);">
+        <div class=" row">
+            <div class="col-md-4">
+                
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" id="txtId"/>
+                <div class="form-group margin-bottom10">
+                    <label asp-for="Name" class="control-label margin-bottom5"></label>
+                    <input asp-for="Name" class="form-control" id="txtTask" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group margin-bottom10">
+                    <label asp-for="ProductionDate" class="control-label margin-bottom5"></label>
+                    <input asp-for="ProductionDate" class="form-control" id="txtEndDate" />
+                    <span asp-validation-for="ProductionDate" class="text-danger"></span>
+                </div>
+                <div class="form-group margin-bottom10">
+                    <label asp-for="Raiting" class="control-label margin-bottom5"></label>
+                    <input asp-for="Raiting" class="form-control" id="txtAssignee" />
+                    <span asp-validation-for="Raiting" class="text-danger"></span>
+                </div>                
+                
+                <div class="row" style="margin-top:30px">
+                    <div class="col-md-3">                    
+                        <input type="submit" value="Submit" class="btn btn-primary" />                    
+                    </div>
+                    <div class="col-md-4">
+                        <a class="btn btn-secondary" asp-action="Index">Back</a>
+                    </div>                    
+                </div>
+            </div>            
+        </div>        
+    </form>    
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>        
+        $(document).ready(function() {
+
+            jQueryPost = form => {                  
+                $('#create-form').validate();
+
+                if ($('#create-form').valid() === true) {
+                    try {
+                        $.ajax({
+                            type: 'POST',
+                            url: form.action,
+                            data: $(form).serialize(),
+                            success: function(res) {
+                                if (res.success) {
+                                    window.location.href = '@(Url.Action("Index", "Movies"))'
+                                }
+                            },
+                            error: function(err) {
+                                console.log(err)
+                            }
+                        })
+                        return false;
+                    } catch (ex) {
+                        console.log(ex)
+                    }
+                }
+            }
+        });
+    </script>
+}
