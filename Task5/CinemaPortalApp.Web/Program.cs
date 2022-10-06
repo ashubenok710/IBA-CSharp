@@ -92,8 +92,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Auth}/{action=Index}/{id?}");
 
+
 /*app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Movies}/{action=GetMovies}/{id?}");
+    pattern: "{controller=Movies}/{action=Index}/{id?}");
 */
 app.Run();

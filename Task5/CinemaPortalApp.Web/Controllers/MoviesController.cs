@@ -17,7 +17,6 @@ public class MoviesController : Controller
     }
 
     [HttpPost]
-    [Authorize]
     public async Task<IActionResult> GetData()
     {
         var draw = Request.Form["draw"].FirstOrDefault();
@@ -40,7 +39,7 @@ public class MoviesController : Controller
         {
             movieItems = movieItems.Where(m => m.Name.Contains(searchValue)
                                         || m.ProductionDate.Contains(searchValue)
-                                        || m.Raiting.Contains(searchValue));
+                                        || m.Raiting.Equals(searchValue));
         }
 
         recordsTotal = await movieItems.CountAsync();
@@ -61,7 +60,6 @@ public class MoviesController : Controller
     }
 
     [HttpGet]
-    [Authorize]
     public async Task<IActionResult> Index()
     {
         return View();
