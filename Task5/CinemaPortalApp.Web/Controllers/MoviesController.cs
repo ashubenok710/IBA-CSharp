@@ -17,6 +17,7 @@ public class MoviesController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> GetData()
     {
         var draw = Request.Form["draw"].FirstOrDefault();
@@ -66,6 +67,7 @@ public class MoviesController : Controller
     }
 
     [HttpGet]
+    [ValidateAntiForgeryToken]
     public async Task<ActionResult<List<Movie>>> GetMovies()
     {
         return Ok(await _movieRepository.GetMovies());
@@ -73,12 +75,14 @@ public class MoviesController : Controller
 
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public void InsertMovie(Movie movie)
     {
         _movieRepository.InsertMovie(movie);
     }
 
     [HttpPut("{id}")]
+    [ValidateAntiForgeryToken]
     public async Task<ActionResult<List<Movie>>> UpdateMovie(Movie movie, int id)
     {
         var dbMovie = await _movieRepository.GetMovieByID(id);
@@ -97,6 +101,7 @@ public class MoviesController : Controller
     }
 
     [HttpDelete("{id}")]
+    [ValidateAntiForgeryToken]
     public async Task<ActionResult<List<Movie>>> DeleteMovie(int id)
     {
         var dbMovie = await _movieRepository.GetMovieByID(id);
@@ -110,6 +115,7 @@ public class MoviesController : Controller
 
     [HttpPost, ActionName("Delete")]
     [Authorize]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id)
     {
         await _movieRepository.RemoveAsync(id);
@@ -131,6 +137,7 @@ public class MoviesController : Controller
 
     [HttpPost]
     [Authorize]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddOrEdit(Movie movie)
     {
         if (movie.Id == 0)

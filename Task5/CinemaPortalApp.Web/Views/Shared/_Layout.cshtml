@@ -24,13 +24,29 @@
                         <ul class="navbar-nav flex-grow-1">                         
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-route-id="1" asp-controller="Auth" asp-action="UserProfile">Profile</a>
-                            </li>
+                            </li>                           
+
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Logout</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Log Out</a>
                             </li>
                         </ul>                    
                     </div>                    
-                }                
+                }  
+                 @if (!Context.User.Identity.IsAuthenticated)
+                {                    
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">                    
+                        <ul class="navbar-nav flex-grow-1">                         
+                           
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-route-id="1" asp-controller="Auth" asp-action="Login">Log In</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Log Out</a>
+                            </li>
+                        </ul>                    
+                    </div>                    
+                }  
             </div>
         </nav>
     </header>
